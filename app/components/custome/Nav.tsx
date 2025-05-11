@@ -25,7 +25,10 @@ export default function Nav() {
     };
     getUser();
     const getsession = async () => {
-      const { data } = await supabase.auth.getSession();    
+      const { data } = await supabase.auth.getSession(); 
+      if(!data){
+        console.log("No Session found")
+      }   
      
     }
     getsession()
@@ -44,7 +47,7 @@ export default function Nav() {
     return () => {
       listener?.subscription?.unsubscribe();
     };
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -63,8 +66,8 @@ export default function Nav() {
   const navLinkClass = (path: string) =>
     `px-3 py-1 rounded-full transition-all text-sm duration-200 ${
       pathname === path
-        ? "border border-gray-300 bg-white text-black"
-        : "hover:border hover:border-gray-300 hover:bg-white/70 hover:text-black"
+        ? "border border-gray-300 bg-black/90 text-white "
+        : "hover:border hover:border-gray-300 hover:bg-black/70 hover:text-white"
     }`;
 
   return (
@@ -99,7 +102,8 @@ export default function Nav() {
           >
             <Link
               href="/summaryAI/upload-pdf"
-              className={navLinkClass("/summaryAI/upload-pdf")}
+              className={navLinkClass("/summaryAI/upload-pdf") }
+              
             >
               PDF Summary
             </Link>

@@ -1,12 +1,11 @@
 // utils/syncUser.ts
 "use server";
-import { createClient } from "@/lib/client";
+import { supabase } from "@/lib/client";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export async function syncUserWithDatabase() {
-  const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {

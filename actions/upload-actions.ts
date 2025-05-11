@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/lib/client";
+
 import generateSummaryFromGemini from "@/lib/geminiAI";
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { formatFileNameAsTitle } from "@/utils/format-utils";

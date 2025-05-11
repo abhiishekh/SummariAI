@@ -9,9 +9,9 @@ import {
 } from "@/actions/upload-actions";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { formatFileNameAsTitle } from "@/utils/format-utils";
+// import { formatFileNameAsTitle } from "@/utils/format-utils";
 import UploadPdfFrom from "@/app/components/custome/uploadForm";
-import { supabase } from '@/lib/client'
+import { supabase } from "@/lib/client";
 
 // zod schema
 const schema = z.object({
@@ -42,93 +42,117 @@ export default function UploadPage() {
     },
   });
 
-
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
-      const userId = JSON.stringify(data?.user?.id,null,2)
+      const userId = JSON.stringify(data?.user?.id, null, 2);
       console.log("User data", userId);
       setUserID(data?.user?.id || null);
     };
     fetchUser();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setIsLoading(true);
-      const formData = new FormData(e.currentTarget);
-      const file = formData.get("file") as File;
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  try {
+    setIsLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const file = formData.get("file") as File;
 
-      // Now validate the file
-      const validatedFile = schema.safeParse({ file });
+    // Now validate the file
+    const validatedFile = schema.safeParse({ file });
 
-      if (!validatedFile.success) {
-        toast("Validation failed");
-        setIsLoading(false);
-        return;
-      }
-
-      toast("PDF is being uploaded! Hang tight, our AI is analyzing your PDF...");
-
-      // Upload the PDF to UploadThing
-      const resp = await startUpload([file]);
-      console.log("Upload response", JSON.stringify(resp, null, 2));
-      // alert(JSON.stringify(resp, null, 2));
-      if (!resp || !resp[0]?.serverData) {
-        toast("Something went wrong during upload.");
-        setIsLoading(false);
-        return;
-      }
-
-      toast("PDF is being processed! Hang tight...");
-
-      // Parse the PDF using LangChain
-      toast("Parsing the PDF! Hang tight...");
-
-      const result = await generatePdfSummary(resp);
-      const { data = null } = result || {};
-
-      if (data) {
-        toast("PDF Summary Generated");
-
-        let storeResult: { success: boolean; data?: { id: string } } | null = null;
-
-        if (data.summary) {
-          toast("Saving the PDF summary...");
-
-          storeResult = await storePdfSummaryAction({
-            userId: userID as string,
-            summary_text: data.summary,
-            original_file_url: resp[0]?.serverData?.file?.url || "",
-            title: formatFileNameAsTitle(data.summary) || "Untitled",
-            file_name: file.name,
-          });
-
-          if (storeResult?.success) {
-            toast("Summary Saved!");
-            setIsLoading(false);
-          } else {
-            toast("Failed to save summary.");
-          }
-        } else {
-          toast("No summary generated.");
-        }
-
-        if (storeResult?.data?.id) {
-          router.push(`/summaries/${storeResult.data.id}`);
-        } else {
-          console.log("No storeResult id", storeResult); // Debugging
-        }
-      }
-    } catch (error) {
-      console.error("Error occurred", error);
-      toast("An error occurred during the upload or processing.");
-      formRef.current?.reset();
-    } finally {
+    if (!validatedFile.success) {
+      toast("Validation failed");
       setIsLoading(false);
+      return;
     }
-  };
+
+    toast("PDF is being uploaded! Hang tight, our AI is analyzing your PDF...");
+
+    // Upload the PDF to UploadThing
+    const resp = await startUpload([file]);
+    // console.log("Upload response", JSON.stringify(resp, null, 2));
+
+    if (!resp || !resp[0]?.serverData) {
+      toast("Something went wrong during upload.");
+      setIsLoading(false);
+      return;
+    }
+
+    toast("PDF is being processed! Hang tight...");
+
+    // Extract necessary data
+    const { fileUrl, userId } = resp[0].serverData;
+
+    // Format the response for generatePdfSummary
+  const uploadResponse = [
+  {
+    name: resp[0].name,
+    serverData: {
+      userId,
+      fileUrl,
+    },
+  },
+] as [
+  {
+    name: string;
+    serverData: {
+      userId: string;
+      fileUrl: string;
+    };
+  }
+];
+
+    console.log("Upload response formatted", JSON.stringify(uploadResponse, null, 2));
+
+
+    // Parse the PDF and generate a summary
+    toast("Parsing the PDF! Hang tight...");
+    const result = await generatePdfSummary(uploadResponse);
+    const { data = null } = result || {};
+
+    if (data) {
+      toast("PDF Summary Generated");
+
+      let storeResult: { success: boolean; data?: { id: string } } | null = null;
+
+      if (data.summary) {
+        toast("Saving the PDF summary...");
+
+        storeResult = await storePdfSummaryAction({
+          userId: userID as string,
+          summary_text: data.summary,
+          original_file_url: fileUrl,
+          title: data.title || "Untitled",
+          file_name: file.name,
+        });
+
+        if (storeResult?.success) {
+          toast("Summary Saved!");
+          setIsLoading(false);
+        } else {
+          toast("Failed to save summary.");
+        }
+      } else {
+        toast("No summary generated.");
+      }
+
+      if (storeResult?.data?.id) {
+        router.push(`/summaries/${storeResult.data.id}`);
+      } else {
+        console.log("No storeResult id", storeResult); // Debugging
+      }
+    }
+  } catch (error) {
+    console.error("Error occurred", error);
+    toast("An error occurred during the upload or processing.");
+    formRef.current?.reset();
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="max-w-4xl mx-auto my-12 flex flex-col items-center justify-center px-4">
@@ -139,7 +163,11 @@ export default function UploadPage() {
         </span>
       </h1>
       <div className="w-full">
-        <UploadPdfFrom ref={formRef} isLoading={isLoading} onSubmit={handleSubmit} />
+        <UploadPdfFrom
+          ref={formRef}
+          isLoading={isLoading}
+          onSubmit={handleSubmit}
+        />
       </div>
     </div>
   );

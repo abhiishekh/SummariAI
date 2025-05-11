@@ -12,7 +12,7 @@ export async function GET() {
     }
   )
 
-  const { data: { user }, error } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
     return new Response(JSON.stringify({ error: 'Not authenticated' }), { status: 401 })

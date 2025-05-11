@@ -1,7 +1,4 @@
-// app/(logged-in)/dashboard/page.tsx
-import { createClient } from '@/lib/server';
-import { get } from 'http';
-import { redirect } from 'next/navigation';
+
 
 export default async function DashboardPage() {
   

@@ -40,7 +40,7 @@ export default function RootLayout({
           <div className="bg-red-500">
             <Nav />
           </div>
-          <div className="min-h-screen mx-auto">
+          <div className="min-h-screen mx-auto ">
             {children}
           </div>
           <Toaster />
