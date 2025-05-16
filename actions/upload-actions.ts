@@ -100,6 +100,7 @@ async function savePdfSummary({
   title,
   file_name,
 }: PdfSummaryType) {
+
   try {
     const response = await prisma.pdf_summary.create({
       data: {
@@ -108,15 +109,17 @@ async function savePdfSummary({
         summary_text,
         title,
         file_name,
+        // status will default to COMPLETED, so no need to set here
       },
     });
-    console.log("✅ Saved summary:", response.id);
+    console.log("✅ Saved summary with id:", response.id);
     return response;
   } catch (error) {
-    console.error("❌ Error while saving PDF summary", error);
+    console.error("❌ Error while saving PDF summary:", error);
     throw error;
   }
 }
+
 
 export async function storePdfSummaryAction({
   userId,
