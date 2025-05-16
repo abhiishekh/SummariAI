@@ -40,9 +40,9 @@ const features: Feature[] = [
     name: "Document Summary",
     description: "Quickly summarize long documents using AI.",
     Visual: (
-      // <OrbitingCircles radius={100} reverse>
-        <Image src={Summary} alt="summary image" className="rounded-full" />
-      // </OrbitingCircles>
+      
+        <Image src={Summary} alt="summary image" className="bg-transparent" />
+      
     ),
   },
   {
@@ -71,7 +71,7 @@ export function Features() {
     {features.map((feature) => (
       <div
         key={feature.name}
-        className="relative overflow-hidden bg-white dark:bg-black p-6 border  border-stone-50/20 "
+        className="relative overflow-hidden bg-white dark:bg-black p-4 md:p-6 border  border-stone-50/20 "
       >
         {/* Visual */}
         <div className="relative h-auto md:h-[300px] w-full flex items-center justify-center mb-4">

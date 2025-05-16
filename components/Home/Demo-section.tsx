@@ -38,8 +38,8 @@ export const summary = {
 
 export default async function DemoSection() {
   return (
-    <section className="relative  h-full w-full flex items-center justify-center">
-      <div className="py-12 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative  h-full w-full flex flex-col items-center justify-center ">
+      <div className="pt-12 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className="flex flex-col items-center text-c
              space-y-4"
@@ -52,17 +52,18 @@ export default async function DemoSection() {
             <h3 className="text-3xl font-bold max-w-2xl mx-auto px-4 sm:px-6">
               Watch How Brainwave transforms this{" "}
               <span className=" bg-linear-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                Next.js course PDF{" "}
+                Brainwave PDF{" "}
               </span>
               into an easy-to-read summary!
             </h3>
           </div>
-          {/* // example summary card  */}
-          <div className="flex justify-center items-center">
-            <SummaryViewer summary={summary.summary_text} />
-          </div>
+         
         </div>
       </div>
+       {/* // example summary card  */}
+          <div className="flex justify-center items-center p-1">
+            <SummaryViewer summary={summary.summary_text} />
+          </div>
     </section>
   );
 }
