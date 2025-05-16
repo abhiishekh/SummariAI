@@ -155,20 +155,30 @@ export default function UploadPage() {
 
 
   return (
-    <div className="max-w-4xl mx-auto my-12 flex flex-col items-center justify-center px-4">
-      <h1 className="text-3xl mb-12 font-bold flex items-center gap-2">
-        Upload your PDF and see its{" "}
-        <span className="border border-blue-500 rounded-full px-3 capitalize bg-blue-200 hover:rotate-5 transform transition-all duration-300 py-1">
-          insights
-        </span>
-      </h1>
-      <div className="w-full">
-        <UploadPdfFrom
-          ref={formRef}
-          isLoading={isLoading}
-          onSubmit={handleSubmit}
-        />
-      </div>
+   <div className="min-h-screen flex items-center justify-center px-4">
+  <div className="max-w-4xl w-full flex flex-col items-center justify-center text-center py-12">
+    <h1 className="text-4xl md:text-5xl mb-6 font-extrabold text-black dark:text-white">
+      Upload Your PDF and Discover its{" "}
+      <span className="border border-blue-500 rounded-full px-4 capitalize bg-blue-200 hover:rotate-3 transform transition-all duration-300 py-2 inline-block">
+        Insights
+      </span>
+    </h1>
+
+    <p className="text-lg md:text-xl text-black/80 dark:text-white/80 mb-8 max-w-2xl">
+      Tired of reading long and complex documents? Just upload your PDF and we&apos;ll generate a quick and clear{" "}
+      <span className="font-semibold text-blue-800 dark:text-blue-300">summary reel</span> — a concise overview
+      that&apos;s easy to read and understand. Perfect for grasping the core message of the document in seconds.
+    </p>
+
+    <div className="w-full">
+      <UploadPdfFrom
+        ref={formRef}
+        isLoading={isLoading}
+        onSubmit={handleSubmit}
+      />
     </div>
+  </div>
+</div>
+
   );
 }

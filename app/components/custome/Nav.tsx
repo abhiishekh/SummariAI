@@ -1,18 +1,18 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/client";
 
 export default function Nav() {
   const [user, setUser] = useState<Session["user"] | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
@@ -20,29 +20,19 @@ export default function Nav() {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
-
       setUser(data.user);
     };
     getUser();
-    const getsession = async () => {
-      const { data } = await supabase.auth.getSession(); 
-      if(!data){
-        console.log("No Session found")
-      }   
-     
-    }
-    getsession()
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === "SIGNED_IN") {
-          setUser(session?.user ?? null);
-        } else if (event === "SIGNED_OUT") {
-          setUser(null);
-          toast.success("Logged out");
-          router.push("/auth/login"); 
-        }
+
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        setUser(session?.user ?? null);
+      } else if (event === "SIGNED_OUT") {
+        setUser(null);
+        toast.success("Logged out");
+        router.push("/auth/login");
       }
-    );
+    });
 
     return () => {
       listener?.subscription?.unsubscribe();
@@ -60,7 +50,6 @@ export default function Nav() {
     if (error) {
       toast.error("Logout failed");
     }
-    
   };
 
   const navLinkClass = (path: string) =>
@@ -102,12 +91,11 @@ export default function Nav() {
           >
             <Link
               href="/summaryAI/upload-pdf"
-              className={navLinkClass("/summaryAI/upload-pdf") }
-              
+              className={navLinkClass("/summaryAI/upload-pdf")}
             >
               PDF Summary
             </Link>
-            <Link href="/summaryAI" className={navLinkClass("/summariAI")}>
+            <Link href="/summaryAI" className={navLinkClass("/summaryAI")}>
               Chat with Own Data
             </Link>
           </div>
@@ -115,12 +103,17 @@ export default function Nav() {
           {/* Auth & Theme */}
           <div className="flex items-center gap-2">
             {user ? (
-              <Button className="cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-400 px-6 py-3" onClick={handleLogout}>
+              <Button
+                className="cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-400 px-4 py-1 md:px-6 md:py-3"
+                onClick={handleLogout}
+              >
                 Logout
               </Button>
             ) : (
               <Link href="/auth/login">
-                <Button className="cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-400 px-6 py-3">Login</Button>
+                <Button className="cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-400 px-4 py-1 md:px-6 md:py-3">
+                  Login
+                </Button>
               </Link>
             )}
 
@@ -132,6 +125,38 @@ export default function Nav() {
                 <Sun className="w-4 h-4 text-yellow-400" />
               ) : (
                 <Moon className="w-4 h-4 text-blue-600" />
+              )}
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden cursor-pointer relative">
+              <button onClick={() => setMenuOpen((prev) => !prev)}>
+                {menuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-black ring-1 ring-black ring-opacity-5 z-50">
+                  <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <li>
+                      <Link
+                        href="/summaryAI/upload-pdf"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Summary
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/summaryAI"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Chat with Own Data
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               )}
             </div>
           </div>

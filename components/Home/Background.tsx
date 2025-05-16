@@ -5,7 +5,7 @@ const Background = () => {
   return (
     <>
     <div className="relative top-0 left-0 w-full h-[130vh] bg-gradient-to-b from-transparent via-transparent to-blue-800 rounded-b-2xl -z-10" >
-     <div className=' '>
+     <div className=' flex items-center justify-center h-full w-full'>
         <Hero/>
 
      </div>

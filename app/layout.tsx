@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Nav from "./components/custome/Nav";
 import { ThemeProvider } from "next-themes";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
 
 // Load fonts with proper variable names
 const geistSans = Geist({
@@ -44,6 +45,7 @@ export default function RootLayout({
             {children}
           </div>
           <Toaster />
+          <SmoothCursor />
         </ThemeProvider>
       </body>
     </html>
