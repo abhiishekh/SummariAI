@@ -1,12 +1,17 @@
-
+import { createClient } from "@/lib/server";
 
 export default async function DashboardPage() {
-  
-  return (
-    <main className="min-h-screen pt-24 px-4 text-white">
-      {/* <h1 className="text-4xl font-bold">Welcome, {userEmail}</h1>
-      <p className="mt-2">Your user ID: {userId}</p> */}
-      {/* You can pass userId to your SummaryList component here */}
-    </main>
-  );
+  const client = await createClient(); // <-- Add `await` here
+
+  const {
+    data: { user },
+    error,
+  } = await client.auth.getUser();
+
+  if (error) {
+    console.error("Error fetching user:", error);
+    return <div>Error fetching user</div>;
+  }
+
+  return <div>Hello {user?.email}</div>;
 }
