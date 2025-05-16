@@ -25,14 +25,16 @@ const features: Feature[] = [
   description: "Chat with powerful language models in natural language.",
   Visual: <VideoComponent video="/videos/LLMchat.mp4" />,
 },
-  {
-    Icon: LightningBoltIcon,
-    name: "RAG ",
-    description: "Context-aware chat using your own documents with RAG.",
-    Visual: (
-<RagBeam/>
-    ),
-  },
+ {
+  Icon: LightningBoltIcon,
+  name: "RAG",
+  description: "Context-aware chat using your own documents with RAG.",
+  Visual: (
+    <div className="w-full  sm:max-w-sm md:max-w-md mx-auto ">
+      <RagBeam />
+    </div>
+  ),
+},
   {
     Icon: FileTextIcon,
     name: "Document Summary",
@@ -65,7 +67,7 @@ const features: Feature[] = [
 export function Features() {
   return (
    <div className="">
-  <div className="grid grid-cols-1 md:grid-cols-2  px-4 md:px-6 max-w-6xl mx-auto">
+  <div className="grid grid-cols-1 md:grid-cols-2  md:px-6 max-w-6xl mx-auto">
     {features.map((feature) => (
       <div
         key={feature.name}

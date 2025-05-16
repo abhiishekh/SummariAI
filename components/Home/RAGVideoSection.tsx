@@ -1,6 +1,6 @@
-'use client';
-import Image from 'next/image';
-import { useState } from 'react';
+"use client";
+import Image from "next/image";
+import { useState } from "react";
 
 export default function RAGVideoSection() {
   const [playVideo, setPlayVideo] = useState(false);
@@ -10,7 +10,7 @@ export default function RAGVideoSection() {
       <div className="flex flex-col items-center text-center space-y-6 mt-20">
         <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
           <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-2xl lg:text-4xl 2xl:text-6xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-          Don&apos;t Know what RAG is? <br />
+            Don&apos;t Know what RAG is? <br />
           </span>
           <span className="text-blue-500 dark:text-blue-400 text-xl">
             No Worries
@@ -24,6 +24,8 @@ export default function RAGVideoSection() {
           >
             <Image
               src="https://img.youtube.com/vi/T-D1OfcDW1M/maxresdefault.jpg"
+              width={1280}
+              height={720}
               alt="RAG Video Thumbnail"
               className="w-full rounded-xl shadow-lg"
             />

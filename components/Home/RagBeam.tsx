@@ -41,73 +41,53 @@ export function RagBeam({
 
   return (
     <div
-      className={cn(
-        "relative flex h-[500px] w-full items-center justify-center overflow-hidden p-10",
-        className,
-      )}
-      ref={containerRef}
-    >
-      <div className="flex size-full max-w-lg flex-row items-stretch justify-between gap-10">
-        <div className="flex flex-col justify-center gap-2">
-          <Circle ref={div1Ref}>
-            <Icons.pdf />
-          </Circle>
-          <Circle ref={div2Ref}>
-            <Icons.googleDocs />
-          </Circle>
-          {/* <Circle ref={div3Ref}>
-            <Icons.whatsapp />
-          </Circle>
-          <Circle ref={div4Ref}>
-            <Icons.messenger />
-          </Circle> */}
-          <Circle ref={div5Ref}>
-            <Icons.notion />
-          </Circle>
-        </div>
-        <div className="flex flex-col justify-center">
-          <Circle ref={div6Ref} className="size-16">
-            <Icons.openai />
-          </Circle>
-        </div>
-        <div className="flex flex-col justify-center">
-          <Circle ref={div7Ref}>
-            <Icons.user />
-          </Circle>
-        </div>
-      </div>
-
-      {/* <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div1Ref}
-        toRef={div6Ref}
-      /> */}
-      {/* <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div2Ref}
-        toRef={div6Ref}
-      /> */}
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div3Ref}
-        toRef={div6Ref}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div4Ref}
-        toRef={div6Ref}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div5Ref}
-        toRef={div6Ref}
-      />
-      {/* <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div6Ref}
-        toRef={div7Ref}
-      /> */}
+  className={cn(
+    "relative flex h-[200px] md:h-[500px] w-full items-center justify-center overflow-hidden p-6 md:p-10",
+    className,
+  )}
+  ref={containerRef}
+>
+  <div className="flex flex-wrap w-full max-w-lg flex-row items-stretch justify-between gap-6 md:gap-10">
+    <div className="flex flex-col justify-center gap-2">
+      <Circle ref={div1Ref} className="w-12 h-12 md:w-16 md:h-16">
+        <Icons.pdf />
+      </Circle>
+      <Circle ref={div2Ref} className="w-12 h-12 md:w-16 md:h-16">
+        <Icons.googleDocs />
+      </Circle>
+      {/* Commented out to avoid errors if refs don't exist
+      <Circle ref={div3Ref} className="w-12 h-12 md:w-16 md:h-16">
+        <Icons.whatsapp />
+      </Circle>
+      <Circle ref={div4Ref} className="w-12 h-12 md:w-16 md:h-16">
+        <Icons.messenger />
+      </Circle> */}
+      <Circle ref={div5Ref} className="w-12 h-12 md:w-16 md:h-16">
+        <Icons.notion />
+      </Circle>
     </div>
+    <div className="flex flex-col justify-center">
+      <Circle ref={div6Ref} className="w-16 h-16 md:w-20 md:h-20">
+        <Icons.openai />
+      </Circle>
+    </div>
+    <div className="flex flex-col justify-center">
+      <Circle ref={div7Ref} className="w-12 h-12 md:w-16 md:h-16">
+        <Icons.user />
+      </Circle>
+    </div>
+  </div>
+
+  {/* AnimatedBeams: ensure refs exist */}
+  {/* Commented out refs not defined, to avoid errors */}
+  {/* <AnimatedBeam containerRef={containerRef} fromRef={div1Ref} toRef={div6Ref} /> */}
+  {/* <AnimatedBeam containerRef={containerRef} fromRef={div2Ref} toRef={div6Ref} /> */}
+  {/* <AnimatedBeam containerRef={containerRef} fromRef={div3Ref} toRef={div6Ref} /> */}
+  {/* <AnimatedBeam containerRef={containerRef} fromRef={div4Ref} toRef={div6Ref} /> */}
+  <AnimatedBeam containerRef={containerRef} fromRef={div5Ref} toRef={div6Ref} />
+  {/* <AnimatedBeam containerRef={containerRef} fromRef={div6Ref} toRef={div7Ref} /> */}
+</div>
+
   );
 }
 
